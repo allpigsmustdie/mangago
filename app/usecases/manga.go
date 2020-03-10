@@ -18,7 +18,7 @@ func (m *MangaService) Create(manga models.Manga) (id int, err error) {
 	return m.repo.Create(manga)
 }
 
-func (m *MangaService) Get(id int) (*models.Manga, error) {
+func (m *MangaService) Get(id int) (models.Manga, error) {
 	return m.repo.Get(id)
 }
 
