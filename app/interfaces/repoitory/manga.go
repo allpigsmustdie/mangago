@@ -5,34 +5,26 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 
 	"github.com/allpigsmustdie/mangago/app/domain/models"
+	"github.com/allpigsmustdie/mangago/app/interfaces/repoitory/gormodel"
 )
-
-type mangaRow struct {
-	gorm.Model
-	models.Manga
-}
-
-func newMangaRow(manga models.Manga) *mangaRow {
-	return &mangaRow{Manga: manga}
-}
 
 type Manga struct {
 	db *gorm.DB
 }
 
 func NewManga(db *gorm.DB) *Manga {
-	db.AutoMigrate(&mangaRow{})
+	db.AutoMigrate(new(gormodel.MangaRow))
 	return &Manga{db: db}
 }
 
 func (m Manga) Create(manga models.Manga) (id int, err error) {
-	model := newMangaRow(manga)
+	model := gormodel.NewMangaRow(manga)
 	m.db.Create(model)
 	return int(model.ID), m.db.Error
 }
 
 func (m Manga) Get(id int) (models.Manga, error) {
-	model := newMangaRow(models.Manga{})
+	model := gormodel.NewMangaRow(models.Manga{})
 	m.db.First(model, id)
 	err := m.db.Error
 	if  err != nil {
