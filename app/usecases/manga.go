@@ -9,6 +9,10 @@ type MangaService struct {
 	repo repository.Manga
 }
 
+func NewMangaService(repo repository.Manga) *MangaService {
+	return &MangaService{repo: repo}
+}
+
 func (m *MangaService) Create(manga models.Manga) (id int, err error) {
 	// TODO: validation
 	return m.repo.Create(manga)
