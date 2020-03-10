@@ -13,7 +13,7 @@ type Manga struct {
 }
 
 func NewManga(db *gorm.DB) *Manga {
-	db.AutoMigrate(new(gormodel.MangaRow))
+	db.AutoMigrate(new(gormodel.MangaRow)) 	//TODO: error handling
 	return &Manga{db: db}
 }
 
