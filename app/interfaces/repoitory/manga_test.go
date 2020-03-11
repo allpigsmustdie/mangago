@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 
 	"github.com/allpigsmustdie/mangago/app/domain/models"
 	"github.com/allpigsmustdie/mangago/app/domain/repository"
