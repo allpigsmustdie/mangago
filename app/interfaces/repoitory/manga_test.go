@@ -51,3 +51,19 @@ Unlike it is sometimes assumed, the manga is in fact not the original version of
 	}
 
 }
+
+func TestManga_Get(t *testing.T) {
+	db, err := newDb()
+	if err != nil {
+		t.Fatalf("failed to connect database: %v\n", err)
+	}
+	defer db.Close()
+	repo := NewManga(db)
+
+	_, err = repo.Get(100500)
+
+	if err != repository.ErrNotFound {
+		t.Fatalf("err != repository.ErrNotFound, got %v", err)
+	}
+
+}

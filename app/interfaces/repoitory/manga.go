@@ -4,6 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 
 	"github.com/allpigsmustdie/mangago/app/domain/models"
+	"github.com/allpigsmustdie/mangago/app/domain/repository"
 	"github.com/allpigsmustdie/mangago/app/interfaces/repoitory/gormodel"
 )
 
@@ -24,6 +25,10 @@ func (m Manga) Create(manga models.Manga) (id int, err error) {
 
 func (m Manga) Get(id int) (models.Manga, error) {
 	model := gormodel.NewMangaRow(models.Manga{})
-	m.db.First(model, id)
+	result := m.db.First(model, id)
+
+	if result.RecordNotFound() || int(model.ID) != id {
+		return models.Manga{}, repository.ErrNotFound
+	}
 	return model.Manga, m.db.Error
 }
