@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	_ "github.com/jinzhu/gorm/dialects/sqlite" // TODO: remove
 
 	. "github.com/allpigsmustdie/mangago/app/infrastructure/server"
 	"github.com/allpigsmustdie/mangago/app/interfaces/http"
@@ -23,7 +23,7 @@ import (
 const shutdownTimeout = 5
 
 func main() {
-	db, err := gorm.Open("sqlite3", ":memory:")
+	db, err := gorm.Open("sqlite3", ":memory:") // TODO: DI, config
 	if err != nil {
 		panic(err)
 	}
