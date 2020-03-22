@@ -13,6 +13,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 
+	. "github.com/allpigsmustdie/mangago/app/infrastructure/server"
 	"github.com/allpigsmustdie/mangago/app/interfaces/http"
 	"github.com/allpigsmustdie/mangago/app/interfaces/http/rest"
 	"github.com/allpigsmustdie/mangago/app/interfaces/repoitory"
@@ -29,9 +30,10 @@ func main() {
 	mangaRepo := repoitory.NewManga(db)
 	mangaService := usecases.NewMangaService(mangaRepo)
 	restHandler := rest.NewHandler(mangaService)
-	server := http.NewServer(restHandler)
+	mainHandler := http.NewMainHandler(restHandler)
+	server := NewServer(mainHandler)
 
-	mainCtx, cancel := context.WithCancel(context.Background())
+	mainCtx, cancelMainCtx := context.WithCancel(context.Background())
 	var wg sync.WaitGroup
 
 	wg.Add(1)
@@ -62,7 +64,7 @@ func main() {
 
 	go func() {
 		wg.Wait()
-		cancel()
+		cancelMainCtx()
 	}()
 
 	<-ctx.Done()
