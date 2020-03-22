@@ -16,4 +16,4 @@ COPY ./docker/dev/.air.toml .
 
 ENV MANGAGO_PORT 8080
 
-CMD ["air", "-c", ".air.toml"]
+CMD ["air", "-d", "-c", ".air.toml"]
