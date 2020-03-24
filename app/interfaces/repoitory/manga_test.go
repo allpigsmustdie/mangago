@@ -23,7 +23,11 @@ func TestMangaRepo(t *testing.T) {
 		t.Fatalf("failed to connect database: %v\n", err)
 	}
 	defer db.Close()
-	repo := NewManga(db)
+	repo, err := NewManga(db)
+
+	if err != nil {
+		t.Fatalf("repo create error: %v", err)
+	}
 
 	model := models.NewManga(
 		"Neon Genesis Evangelion",
@@ -58,7 +62,11 @@ func TestManga_Get(t *testing.T) {
 		t.Fatalf("failed to connect database: %v\n", err)
 	}
 	defer db.Close()
-	repo := NewManga(db)
+	repo, err := NewManga(db)
+
+	if err != nil {
+		t.Fatalf("repo create error: %v", err)
+	}
 
 	_, err = repo.Get(100500)
 

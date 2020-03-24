@@ -3,13 +3,14 @@ package usecases
 import (
 	"github.com/allpigsmustdie/mangago/app/domain/models"
 	"github.com/allpigsmustdie/mangago/app/domain/repository"
+	"github.com/allpigsmustdie/mangago/app/domain/service"
 )
 
 type MangaService struct {
 	repo repository.Manga
 }
 
-func NewMangaService(repo repository.Manga) *MangaService {
+func NewMangaService(repo repository.Manga) service.Manga {
 	return &MangaService{repo: repo}
 }
 

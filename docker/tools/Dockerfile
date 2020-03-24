@@ -1,3 +1,4 @@
 FROM mangago-base
 
-RUN go get -u github.com/google/wire/cmd/wire
+RUN go install github.com/google/wire/cmd/wire \
+    github.com/cosmtrek/air

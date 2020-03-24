@@ -1,6 +1,8 @@
 package repoitory
 
 import (
+	"fmt"
+
 	"github.com/jinzhu/gorm"
 
 	"github.com/allpigsmustdie/mangago/app/domain/models"
@@ -12,9 +14,11 @@ type Manga struct {
 	db *gorm.DB
 }
 
-func NewManga(db *gorm.DB) *Manga {
-	db.AutoMigrate(new(gormodel.MangaRow)) 	//TODO: error handling
-	return &Manga{db: db}
+func NewManga(db *gorm.DB) (repository.Manga, error) {
+	if err := db.AutoMigrate(new(gormodel.MangaRow)).Error; err != nil { // TODO: remove this
+		return nil, fmt.Errorf("cannot migrate MangaRow: %w", err)
+	}
+	return &Manga{db: db}, nil
 }
 
 func (m Manga) Create(manga models.Manga) (id int, err error) {

@@ -9,29 +9,15 @@ import (
 	"sync"
 	"syscall"
 	"time"
-
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite" // TODO: remove
-
-	. "github.com/allpigsmustdie/mangago/app/infrastructure/server"
-	"github.com/allpigsmustdie/mangago/app/interfaces/http"
-	"github.com/allpigsmustdie/mangago/app/interfaces/http/rest"
-	"github.com/allpigsmustdie/mangago/app/interfaces/repoitory"
-	"github.com/allpigsmustdie/mangago/app/usecases"
 )
 
 const shutdownTimeout = 5
 
 func main() {
-	db, err := gorm.Open("sqlite3", ":memory:") // TODO: DI, config
+	app, err := InitApp()
 	if err != nil {
 		panic(err)
 	}
-	mangaRepo := repoitory.NewManga(db)
-	mangaService := usecases.NewMangaService(mangaRepo)
-	restHandler := rest.NewHandler(mangaService)
-	mainHandler := http.NewMainHandler(restHandler)
-	server := NewServer(mainHandler)
 
 	mainCtx, cancelMainCtx := context.WithCancel(context.Background())
 	var wg sync.WaitGroup
@@ -39,7 +25,7 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		if err := server.ListenAndServe(); err != net.ErrServerClosed {
+		if err := app.Server.ListenAndServe(); err != net.ErrServerClosed {
 			log.Printf("HTTP server ListenAndServe: %v\n", err)
 		}
 	}()
@@ -57,7 +43,7 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		if err := server.Shutdown(ctx); err != nil {
+		if err := app.Server.Shutdown(ctx); err != nil {
 			log.Printf("HTTP server Shutdown: %v\n", err)
 		}
 	}()
