@@ -16,7 +16,7 @@ import (
 func InitApp() (App, error) {
 	panic(wire.Build(
 		NewApp,
-		sqlite.InMemory,
+		sqlite.InMemory, // TODO: postgreSQL
 		repoitory.NewManga,
 		usecases.NewMangaService,
 		rest.NewHandler,

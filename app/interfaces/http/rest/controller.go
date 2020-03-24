@@ -8,6 +8,7 @@ import (
 	"github.com/allpigsmustdie/mangago/app/interfaces/http/rest/v1/manga"
 )
 
+// TODO move routing to infrastructure layer
 func NewHandler(mangaService service.Manga) http.RESTHandler {
 	engine := gin.New()
 	engine.Use(gin.Logger(), gin.Recovery())
